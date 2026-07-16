@@ -104,4 +104,4 @@ auto_build_kwin/
 
 ## 许可证
 
-本构建脚本仅供参考使用。[KDE-Rounded-Corners](https://github.com/matinlotfali/KDE-Rounded-Corners) 插件有其独立的许可证。
+本项目采用 [MIT 许可证](LICENSE)。[KDE-Rounded-Corners](https://github.com/matinlotfali/KDE-Rounded-Corners) 插件有其独立的许可证。
