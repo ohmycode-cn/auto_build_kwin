@@ -75,10 +75,13 @@ echo "https://github.com/你的用户名/KDE-Rounded-Corners.git" > repo.url.con
 
 ```
 auto_build_kwin/
-├── build.sh          # 主构建脚本
-├── repo.url.config   # Git 克隆 URL 配置
-├── README.md         # 本文件
-└── .gitignore
+├── build.sh                      # 主构建脚本
+├── repo.url.config               # Git 克隆 URL 配置
+├── LICENSE                       # MIT 许可证
+├── README.md                     # 本文件
+├── .gitignore
+└── local/
+    └── KDE-Rounded-Corners.zip   # 本地构建源码压缩包
 ```
 
 ## 常见问题
