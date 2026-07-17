@@ -71,7 +71,7 @@ function dct_environment() {
         "clang"
         "wget"
     )
-
+    
     for itm in "${dependencies_list[@]}"; do
         if ! pacman -Q "${itm}"; then
             echo -e "[ERROR] ${itm} is not installed, please exec cmd: sudo pacman -S --noconfirm ${itm}"
@@ -116,17 +116,17 @@ function build_kwin() {
         msg_error "Failed t || exito change directory to ${DIRNAME}"
         return 1
     fi
-
+    
     if ! mkdir build && cd build; then
         msg_error "Failed to create build directory"
         return 1
     fi
-
+    
     if ! cmake .. -DCMAKE_INSTALL_PREFIX=/usr; then
         msg_error "Failed to configure build"
         return 1
     fi
-
+    
     local ret
     # shellcheck disable=SC2046
     cmake --build . -j$(nproc); ret=${?}
@@ -135,14 +135,14 @@ function build_kwin() {
         msg_error "Failed to build"
         return 1
     fi
-
+    
     msg_info "Maybe require root permission to install"
-
+    
     if ! sudo cmake --install .; then
         msg_error "Failed to install"
         return 1
     fi
-
+    
     msg_done "KDE-Rounded-Corners installed successfully"
     return 0
 }
@@ -158,32 +158,61 @@ function build_kwin() {
 # Returns:
 #   0 on success, 1 on failure
 function main() {
-    if [[ ! -f "repo.url.config" ]]; then
-        msg_error "repo.url.config file not found"
-        return 1
+    
+    local param_string="${1}"
+    if [[ "local" == "${param_string}" ]]; then
+        
+        msg_warning "╔════════════════════════════════════════════════════════════════════════════════════╗"
+        msg_warning "║ You using local resource build kwin effect plugin. This may be a lagging version ! ║"
+        msg_warning "╚════════════════════════════════════════════════════════════════════════════════════╝"
+        
+        msg_info "GITHUB URL: ${REPO_URL}"
+        if ! dct_environment; then
+            return 1
+        fi
+        
+        msg_info "Building KDE-Rounded-Corners"
+        local local_dirname="local"
+        
+        if ! cd "${local_dirname}"; then
+            msg_error "Failed to change directory to ${local_dirname}"
+            return 1
+        fi
+        
+        if ! build_kwin; then
+            return 1
+        fi
+        
+    else
+        
+        if [[ ! -f "repo.url.config" ]]; then
+            msg_error "repo.url.config file not found"
+            return 1
+        fi
+        
+        if [[ -z "${REPO_URL}" ]]; then
+            msg_error "repo.url.config file is empty"
+            return 1
+        fi
+        
+        msg_info "GITHUB URL: ${REPO_URL}"
+        if ! dct_environment; then
+            return 1
+        fi
+        
+        msg_info "Cloning repository from ${REPO_URL}"
+        if ! clone_repository; then
+            return 1
+        fi
+        
+        msg_info "Building KDE-Rounded-Corners"
+        if ! build_kwin; then
+            return 1
+        fi
+        
     fi
-
-    if [[ -z "${REPO_URL}" ]]; then
-        msg_error "repo.url.config file is empty"
-        return 1
-    fi
-
-    msg_info "GITHUB URL: ${REPO_URL}"
-    if ! dct_environment; then
-        return 1
-    fi
-
-    msg_info "Cloning repository from ${REPO_URL}"
-    if ! clone_repository; then
-        return 1
-    fi
-
-    msg_info "Building KDE-Rounded-Corners"
-    if ! build_kwin; then
-        return 1
-    fi
-
+    
     return 0
 }
-main
+main "${1}"
 exit 0

@@ -102,6 +102,16 @@ auto_build_kwin/
 
 安装步骤需要 root 权限，请使用 `sudo` 运行或以 root 身份执行。
 
+## 致谢
+
+本项目的开发参考并引用了以下开源仓库，在此表示感谢：
+
+| 仓库 | 作者 | 说明 |
+|------|------|------|
+| [KDE-Rounded-Corners](https://github.com/matinlotfali/KDE-Rounded-Corners) | [matinlotfali](https://github.com/matinlotfali) | 本项目的核心构建目标，为 KDE Plasma 窗口管理器添加圆角窗口效果 |
+
+本项目仅封装了自动化构建流程，KDE-Rounded-Corners 的版权与许可证归原作者所有。
+
 ## 许可证
 
 本项目采用 [MIT 许可证](LICENSE)。[KDE-Rounded-Corners](https://github.com/matinlotfali/KDE-Rounded-Corners) 插件有其独立的许可证。
